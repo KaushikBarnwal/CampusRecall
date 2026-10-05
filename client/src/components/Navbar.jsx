@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Compass,
   FolderHeart,
@@ -15,8 +16,6 @@ import {
 } from 'lucide-react';
 
 export default function Navbar({
-  currentView,
-  setCurrentView,
   currentUser,
   myReportsCount = 0,
   dataSource = 'connecting',
@@ -24,6 +23,8 @@ export default function Navbar({
   onToggleTheme,
   onOpenAuth,
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [reportDropdownOpen, setReportDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
@@ -80,7 +81,7 @@ export default function Navbar({
         {/* Left Side: Brand Logo & Navigation */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div
-            onClick={() => setCurrentView('home')}
+            onClick={() => navigate('/')}
             style={{
               cursor: 'pointer',
               display: 'flex',
@@ -116,13 +117,13 @@ export default function Navbar({
           <nav style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
             <button
               type="button"
-              onClick={() => setCurrentView('home')}
+              onClick={() => navigate('/')}
               style={{
                 padding: '6px 12px',
                 fontSize: '13px',
-                fontWeight: currentView === 'home' ? 700 : 500,
-                background: currentView === 'home' ? '#1e293b' : 'transparent',
-                color: currentView === 'home' ? '#38bdf8' : '#94a3b8',
+                fontWeight: location.pathname === '/' || location.pathname === '/map' ? 700 : 500,
+                background: location.pathname === '/' || location.pathname === '/map' ? '#1e293b' : 'transparent',
+                color: location.pathname === '/' || location.pathname === '/map' ? '#38bdf8' : '#94a3b8',
                 borderRadius: '8px',
               }}
             >
@@ -131,13 +132,13 @@ export default function Navbar({
 
             <button
               type="button"
-              onClick={() => setCurrentView('my-reports')}
+              onClick={() => navigate('/my-reports')}
               style={{
                 padding: '6px 12px',
                 fontSize: '13px',
-                fontWeight: currentView === 'my-reports' ? 700 : 500,
-                background: currentView === 'my-reports' ? '#1e293b' : 'transparent',
-                color: currentView === 'my-reports' ? '#38bdf8' : '#94a3b8',
+                fontWeight: location.pathname === '/my-reports' ? 700 : 500,
+                background: location.pathname === '/my-reports' ? '#1e293b' : 'transparent',
+                color: location.pathname === '/my-reports' ? '#38bdf8' : '#94a3b8',
                 borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
@@ -232,7 +233,7 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={() => {
-                    setCurrentView('report-lost');
+                    navigate('/report-lost');
                     setReportDropdownOpen(false);
                   }}
                   style={{
@@ -242,7 +243,7 @@ export default function Navbar({
                     width: '100%',
                     padding: '8px 12px',
                     borderRadius: '8px',
-                    background: currentView === 'report-lost' ? 'var(--lost-bg, #fef2f2)' : 'transparent',
+                    background: location.pathname === '/report-lost' ? 'var(--lost-bg, #fef2f2)' : 'transparent',
                     color: '#ef4444',
                     textAlign: 'left',
                     fontSize: '13px',
@@ -259,7 +260,7 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={() => {
-                    setCurrentView('report-found');
+                    navigate('/report-found');
                     setReportDropdownOpen(false);
                   }}
                   style={{
@@ -269,7 +270,7 @@ export default function Navbar({
                     width: '100%',
                     padding: '8px 12px',
                     borderRadius: '8px',
-                    background: currentView === 'report-found' ? 'var(--found-bg, #ecfdf5)' : 'transparent',
+                    background: location.pathname === '/report-found' ? 'var(--found-bg, #ecfdf5)' : 'transparent',
                     color: '#10b981',
                     textAlign: 'left',
                     fontSize: '13px',

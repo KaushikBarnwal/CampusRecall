@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { initialItems } from './data/sampleItems';
 import { itemService } from './services/itemService';
@@ -15,12 +16,14 @@ import ToastContainer from './components/ToastContainer';
 import ConfirmModal from './components/ConfirmModal';
 
 export default function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'my-reports', 'report-lost', 'report-found'
   const [dataSource, setDataSource] = useState('connecting');
 
-  // Option 5: Dark / Light Mode state
+  // Dark / Light Mode state
   const [theme, setTheme] = useState(() => localStorage.getItem('lost_and_found_theme') || 'light');
 
   useEffect(() => {
@@ -28,24 +31,24 @@ export default function App() {
     localStorage.setItem('lost_and_found_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
+  }, []);
 
-  // Option 2: Toast Notifications system
+  // Toast Notifications system
   const [toasts, setToasts] = useState([]);
 
-  const addToast = (message, type = 'success') => {
+  const addToast = useCallback((message, type = 'success') => {
     const id = Date.now() + Math.random().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3500);
-  };
+  }, []);
 
-  const removeToast = (id) => {
+  const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, []);
 
   // User Authentication State
   const [currentUser, setCurrentUser] = useState(() => {
@@ -67,7 +70,7 @@ export default function App() {
   const [activePosterItem, setActivePosterItem] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
 
-  // Option 4: Search, Filter, Sort & Date states
+  // Search, Filter, Sort & Date states
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filterType, setFilterType] = useState('All');
@@ -75,15 +78,12 @@ export default function App() {
   const [sortBy, setSortBy] = useState('newest');
   const [dateRange, setDateRange] = useState('all');
 
-  // Option 1: Map View vs List View
-  const [viewMode, setViewMode] = useState('list'); // 'list' | 'map'
-
   // User switch handler
-  const handleSelectUser = (user) => {
+  const handleSelectUser = useCallback((user) => {
     setCurrentUser(user);
     localStorage.setItem('lost_and_found_user', JSON.stringify(user));
     addToast(`Switched profile to ${user.name}`, 'info');
-  };
+  }, [addToast]);
 
   // Load items on initial mount
   useEffect(() => {
@@ -109,23 +109,23 @@ export default function App() {
   }, []);
 
   // Add new item (calls backend API + persists with createdBy)
-  const handleAddItem = async (newItemData) => {
+  const handleAddItem = useCallback(async (newItemData) => {
     try {
       const savedItem = await itemService.createItem(newItemData);
       setItems((prev) => [savedItem, ...prev]);
-      setCurrentView('home');
+      navigate('/');
       addToast('Listing published successfully!', 'success');
     } catch (err) {
       console.error('Error creating item:', err);
       const fallbackItem = { ...newItemData, _id: 'local_' + Date.now() };
       setItems((prev) => [fallbackItem, ...prev]);
-      setCurrentView('home');
+      navigate('/');
       addToast('Saved listing locally (offline mode)', 'info');
     }
-  };
+  }, [navigate, addToast]);
 
   // Update item status (e.g. OPEN -> CLAIMED -> RESOLVED) with optional claimData
-  const handleUpdateStatus = async (itemId, newStatus, claimData = null) => {
+  const handleUpdateStatus = useCallback(async (itemId, newStatus, claimData = null) => {
     try {
       await itemService.updateStatus(itemId, newStatus, claimData);
       setItems((prev) =>
@@ -143,10 +143,10 @@ export default function App() {
       console.error('Error updating status:', err);
       addToast('Failed to update status', 'error');
     }
-  };
+  }, [addToast]);
 
   // Delete item with custom confirm modal
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = useCallback(async () => {
     if (!itemToDelete) return;
     try {
       await itemService.deleteItem(itemToDelete._id || itemToDelete.id);
@@ -158,86 +158,100 @@ export default function App() {
     } finally {
       setItemToDelete(null);
     }
-  };
+  }, [itemToDelete, addToast]);
 
   // Submit claim on an item
-  const handleSubmitClaim = async (itemId, claimData) => {
+  const handleSubmitClaim = useCallback(async (itemId, claimData) => {
     await handleUpdateStatus(itemId, 'CLAIMED', claimData);
     addToast('Claim request sent to poster with proof details!', 'success');
-  };
+  }, [handleUpdateStatus, addToast]);
 
-  // Filter items for "My Reports" view
+  // Performance Optimization: Memoized My Reports count
   const userEmail = currentUser?.email?.toLowerCase();
-  const myReportsCount = items.filter((i) => {
-    const contactMatch = i.contact?.toLowerCase() === userEmail;
-    const creatorMatch = i.createdBy?.email?.toLowerCase() === userEmail;
-    return contactMatch || creatorMatch;
-  }).length;
+  const myReportsCount = useMemo(() => {
+    return items.filter((i) => {
+      const contactMatch = i.contact?.toLowerCase() === userEmail;
+      const creatorMatch = i.createdBy?.email?.toLowerCase() === userEmail;
+      return contactMatch || creatorMatch;
+    }).length;
+  }, [items, userEmail]);
 
-  const displayedSourceItems =
-    currentView === 'my-reports'
-      ? items.filter((i) => {
-          const contactMatch = i.contact?.toLowerCase() === userEmail;
-          const creatorMatch = i.createdBy?.email?.toLowerCase() === userEmail;
-          return currentUser.role === 'admin' ? true : contactMatch || creatorMatch;
-        })
-      : items;
+  // Performance Optimization: Memoized filtered items per current route
+  const isMyReportsRoute = location.pathname === '/my-reports';
 
-  // Filter items based on keyword, category, type, status, and date range
-  const filteredItems = displayedSourceItems
-    .filter((item) => {
-      const itemStatus = item.status || 'OPEN';
-      const matchesKeyword =
-        item.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        item.location.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        (item.description && item.description.toLowerCase().includes(searchKeyword.toLowerCase()));
-
-      const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
-      const matchesType = filterType === 'All' || item.type === filterType;
-      const matchesStatus = statusFilter === 'All' || itemStatus === statusFilter;
-
-      // Date range filter
-      let matchesDate = true;
-      if (dateRange !== 'all') {
-        const itemDate = new Date(item.date || item.createdAt);
-        const now = new Date();
-        const diffHours = (now - itemDate) / (1000 * 60 * 60);
-
-        if (dateRange === '24h') matchesDate = diffHours <= 24;
-        else if (dateRange === '7d') matchesDate = diffHours <= 24 * 7;
-        else if (dateRange === '30d') matchesDate = diffHours <= 24 * 30;
-      }
-
-      return matchesKeyword && matchesCategory && matchesType && matchesStatus && matchesDate;
-    })
-    .sort((a, b) => {
-      // Sorting
-      if (sortBy === 'title') {
-        return a.title.localeCompare(b.title);
-      }
-      const dateA = new Date(a.date || a.createdAt || 0).getTime();
-      const dateB = new Date(b.date || b.createdAt || 0).getTime();
-      if (sortBy === 'oldest') {
-        return dateA - dateB;
-      }
-      return dateB - dateA; // 'newest' default
+  const displayedSourceItems = useMemo(() => {
+    if (!isMyReportsRoute) return items;
+    return items.filter((i) => {
+      const contactMatch = i.contact?.toLowerCase() === userEmail;
+      const creatorMatch = i.createdBy?.email?.toLowerCase() === userEmail;
+      return currentUser?.role === 'admin' ? true : contactMatch || creatorMatch;
     });
+  }, [items, isMyReportsRoute, userEmail, currentUser?.role]);
 
-  // Compute live item counts for filter pills
-  const counts = {
-    total: displayedSourceItems.length,
-    lost: displayedSourceItems.filter((i) => i.type === 'LOST').length,
-    found: displayedSourceItems.filter((i) => i.type === 'FOUND').length,
-    open: displayedSourceItems.filter((i) => (i.status || 'OPEN') === 'OPEN').length,
-    claimed: displayedSourceItems.filter((i) => i.status === 'CLAIMED').length,
-    resolved: displayedSourceItems.filter((i) => i.status === 'RESOLVED').length,
-  };
+  // Performance Optimization: Memoized multi-criteria search, filter, and sort calculations
+  const filteredItems = useMemo(() => {
+    return displayedSourceItems
+      .filter((item) => {
+        const itemStatus = item.status || 'OPEN';
+        const matchesKeyword =
+          item.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+          item.location.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+          (item.description && item.description.toLowerCase().includes(searchKeyword.toLowerCase()));
+
+        const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
+        const matchesType = filterType === 'All' || item.type === filterType;
+        const matchesStatus = statusFilter === 'All' || itemStatus === statusFilter;
+
+        // Date range filter
+        let matchesDate = true;
+        if (dateRange !== 'all') {
+          const itemDate = new Date(item.date || item.createdAt);
+          const now = new Date();
+          const diffHours = (now - itemDate) / (1000 * 60 * 60);
+
+          if (dateRange === '24h') matchesDate = diffHours <= 24;
+          else if (dateRange === '7d') matchesDate = diffHours <= 24 * 7;
+          else if (dateRange === '30d') matchesDate = diffHours <= 24 * 30;
+        }
+
+        return matchesKeyword && matchesCategory && matchesType && matchesStatus && matchesDate;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'title') {
+          return a.title.localeCompare(b.title);
+        }
+        const dateA = new Date(a.date || a.createdAt || 0).getTime();
+        const dateB = new Date(b.date || b.createdAt || 0).getTime();
+        if (sortBy === 'oldest') {
+          return dateA - dateB;
+        }
+        return dateB - dateA; // 'newest' default
+      });
+  }, [displayedSourceItems, searchKeyword, selectedCategory, filterType, statusFilter, dateRange, sortBy]);
+
+  // Performance Optimization: Memoized count badges
+  const counts = useMemo(() => {
+    return {
+      total: displayedSourceItems.length,
+      lost: displayedSourceItems.filter((i) => i.type === 'LOST').length,
+      found: displayedSourceItems.filter((i) => i.type === 'FOUND').length,
+      open: displayedSourceItems.filter((i) => (i.status || 'OPEN') === 'OPEN').length,
+      claimed: displayedSourceItems.filter((i) => i.status === 'CLAIMED').length,
+      resolved: displayedSourceItems.filter((i) => i.status === 'RESOLVED').length,
+    };
+  }, [displayedSourceItems]);
+
+  const handleToggleViewMode = useCallback((newMode) => {
+    if (newMode === 'map') {
+      navigate('/map');
+    } else {
+      navigate('/');
+    }
+  }, [navigate]);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-page)' }}>
       <Navbar
-        currentView={currentView}
-        setCurrentView={setCurrentView}
         currentUser={currentUser}
         myReportsCount={myReportsCount}
         dataSource={dataSource}
@@ -255,52 +269,139 @@ export default function App() {
             <p>Loading items from directory...</p>
           </div>
         ) : (
-          <>
-            {(currentView === 'home' || currentView === 'my-reports') && (
-              <Home
-                items={filteredItems}
-                currentUser={currentUser}
-                searchKeyword={searchKeyword}
-                setSearchKeyword={setSearchKeyword}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                filterType={filterType}
-                setFilterType={setFilterType}
-                statusFilter={statusFilter}
-                setStatusFilter={setStatusFilter}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-                dateRange={dateRange}
-                setDateRange={setDateRange}
-                viewMode={viewMode}
-                setViewMode={setViewMode}
-                onUpdateStatus={handleUpdateStatus}
-                onDeleteItem={(id) => {
-                  const it = items.find((item) => (item._id === id || item.id === id));
-                  setItemToDelete(it);
-                }}
-                counts={counts}
-                onOpenMatches={(item) => setActiveMatchItem(item)}
-                onOpenPoster={(item) => setActivePosterItem(item)}
-                onOpenClaim={(item) => setActiveClaimItem(item)}
-                isMyReportsView={currentView === 'my-reports'}
-              />
-            )}
-            {currentView === 'report-lost' && (
-              <ReportLostItem
-                currentUser={currentUser}
-                onAddItem={handleAddItem}
-                onCancel={() => setCurrentView('home')}
-              />
-            )}
-            {currentView === 'report-found' && (
-              <ReportFoundItem
-                currentUser={currentUser}
-                onAddItem={handleAddItem}
-                onCancel={() => setCurrentView('home')}
-              />
-            )}
-          </>
+          <Routes>
+            {/* Route 1: Browse Feed (List View) */}
+            <Route
+              path="/"
+              element={
+                <Home
+                  items={filteredItems}
+                  currentUser={currentUser}
+                  searchKeyword={searchKeyword}
+                  setSearchKeyword={setSearchKeyword}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  filterType={filterType}
+                  setFilterType={setFilterType}
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                  viewMode="list"
+                  setViewMode={handleToggleViewMode}
+                  onUpdateStatus={handleUpdateStatus}
+                  onDeleteItem={(id) => {
+                    const it = items.find((item) => item._id === id || item.id === id);
+                    setItemToDelete(it);
+                  }}
+                  counts={counts}
+                  onOpenMatches={(item) => setActiveMatchItem(item)}
+                  onOpenPoster={(item) => setActivePosterItem(item)}
+                  onOpenClaim={(item) => setActiveClaimItem(item)}
+                  isMyReportsView={false}
+                />
+              }
+            />
+
+            {/* Route 2: Interactive Campus Map View */}
+            <Route
+              path="/map"
+              element={
+                <Home
+                  items={filteredItems}
+                  currentUser={currentUser}
+                  searchKeyword={searchKeyword}
+                  setSearchKeyword={setSearchKeyword}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  filterType={filterType}
+                  setFilterType={setFilterType}
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                  viewMode="map"
+                  setViewMode={handleToggleViewMode}
+                  onUpdateStatus={handleUpdateStatus}
+                  onDeleteItem={(id) => {
+                    const it = items.find((item) => item._id === id || item.id === id);
+                    setItemToDelete(it);
+                  }}
+                  counts={counts}
+                  onOpenMatches={(item) => setActiveMatchItem(item)}
+                  onOpenPoster={(item) => setActivePosterItem(item)}
+                  onOpenClaim={(item) => setActiveClaimItem(item)}
+                  isMyReportsView={false}
+                />
+              }
+            />
+
+            {/* Route 3: My Reported Belongings View */}
+            <Route
+              path="/my-reports"
+              element={
+                <Home
+                  items={filteredItems}
+                  currentUser={currentUser}
+                  searchKeyword={searchKeyword}
+                  setSearchKeyword={setSearchKeyword}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  filterType={filterType}
+                  setFilterType={setFilterType}
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                  viewMode="list"
+                  setViewMode={handleToggleViewMode}
+                  onUpdateStatus={handleUpdateStatus}
+                  onDeleteItem={(id) => {
+                    const it = items.find((item) => item._id === id || item.id === id);
+                    setItemToDelete(it);
+                  }}
+                  counts={counts}
+                  onOpenMatches={(item) => setActiveMatchItem(item)}
+                  onOpenPoster={(item) => setActivePosterItem(item)}
+                  onOpenClaim={(item) => setActiveClaimItem(item)}
+                  isMyReportsView={true}
+                />
+              }
+            />
+
+            {/* Route 4: Report Lost Item */}
+            <Route
+              path="/report-lost"
+              element={
+                <ReportLostItem
+                  currentUser={currentUser}
+                  onAddItem={handleAddItem}
+                  onCancel={() => navigate('/')}
+                />
+              }
+            />
+
+            {/* Route 5: Report Found Item */}
+            <Route
+              path="/report-found"
+              element={
+                <ReportFoundItem
+                  currentUser={currentUser}
+                  onAddItem={handleAddItem}
+                  onCancel={() => navigate('/')}
+                />
+              }
+            />
+
+            {/* Fallback Catch-all Route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         )}
       </main>
 

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Search,
   X,
@@ -12,7 +13,7 @@ import {
   Calendar,
 } from 'lucide-react';
 
-export default function SearchFilter({
+function SearchFilter({
   searchKeyword,
   setSearchKeyword,
   selectedCategory,
@@ -313,3 +314,5 @@ export default function SearchFilter({
     </div>
   );
 }
+
+export default memo(SearchFilter);

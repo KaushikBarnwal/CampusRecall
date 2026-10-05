@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import {
   AlertCircle,
   CheckCircle2,
@@ -192,7 +192,7 @@ function StatusDropdown({ currentStatus, isUpdating, onStatusChange }) {
   );
 }
 
-export default function ItemCard({
+function ItemCard({
   item,
   currentUser,
   onUpdateStatus,
@@ -696,3 +696,5 @@ export default function ItemCard({
     </div>
   );
 }
+
+export default memo(ItemCard);
