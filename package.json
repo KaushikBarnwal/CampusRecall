@@ -1,0 +1,13 @@
+{
+  "name": "campusrecall",
+  "version": "1.0.0",
+  "description": "CampusRecall — Smart Campus Lost and Found Portal",
+  "scripts": {
+    "client": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server",
+    "install:all": "npm install --prefix client && npm install --prefix server"
+  },
+  "keywords": ["mern", "lost-and-found"],
+  "author": "",
+  "license": "ISC"
+}
