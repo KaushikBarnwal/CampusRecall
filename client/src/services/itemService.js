@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api/items';
+const BACKEND_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+const API_BASE_URL = `${BACKEND_URL}/api/items`;
 const STORAGE_KEY = 'lost_and_found_items_fallback';
 
 export const itemService = {

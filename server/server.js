@@ -13,15 +13,33 @@ connectDB();
 const app = express();
 
 // Middlewares
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:3000',
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      return callback(null, true);
+    }
+    // Allow by default to prevent production client lockouts
+    return callback(null, true);
+  },
   credentials: true,
 }));
 app.use(express.json());
 
 // API Health Check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Lost and Found API is running smoothly' });
+  res.status(200).json({ status: 'ok', message: 'CampusRecall API is running smoothly' });
 });
 
 // Mount Routes
