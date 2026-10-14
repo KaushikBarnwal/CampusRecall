@@ -32,18 +32,18 @@ export default function ToastContainer({ toasts, onDismiss }) {
               gap: '10px',
               padding: '12px 16px',
               borderRadius: '12px',
-              background: '#0f172a',
+              background: 'var(--nav-bg, #1c1a18)',
               color: '#ffffff',
-              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
-              border: `1px solid ${isSuccess ? '#10b981' : isError ? '#ef4444' : '#3b82f6'}`,
+              boxShadow: '0 10px 25px -5px rgba(20, 18, 16, 0.35)',
+              border: `1px solid ${isSuccess ? 'var(--found-color, #15803d)' : isError ? 'var(--lost-color, #c2410c)' : 'var(--primary, #235d41)'}`,
               fontSize: '13px',
               fontWeight: 500,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {isSuccess && <CheckCircle2 size={16} color="#10b981" style={{ flexShrink: 0 }} />}
-              {isError && <AlertCircle size={16} color="#ef4444" style={{ flexShrink: 0 }} />}
-              {!isSuccess && !isError && <Info size={16} color="#60a5fa" style={{ flexShrink: 0 }} />}
+              {isSuccess && <CheckCircle2 size={16} color="var(--found-color, #15803d)" style={{ flexShrink: 0 }} />}
+              {isError && <AlertCircle size={16} color="var(--lost-color, #c2410c)" style={{ flexShrink: 0 }} />}
+              {!isSuccess && !isError && <Info size={16} color="var(--nav-accent, #34d399)" style={{ flexShrink: 0 }} />}
               <span>{toast.message}</span>
             </div>
             <button
@@ -52,7 +52,7 @@ export default function ToastContainer({ toasts, onDismiss }) {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#94a3b8',
+                color: 'var(--text-subtle, #a8a29e)',
                 padding: '2px',
                 cursor: 'pointer',
               }}

@@ -264,7 +264,7 @@ export default function App() {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-muted)' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
-              <Loader2 size={32} color="#2563eb" className="spin-icon" />
+              <Loader2 size={32} color="var(--primary)" className="spin-icon" />
             </div>
             <p>Loading items from directory...</p>
           </div>

@@ -68,7 +68,7 @@ function SearchFilter({
               pointerEvents: 'none',
             }}
           >
-            <Search size={18} color="#94a3b8" />
+            <Search size={18} color="var(--text-subtle)" />
           </span>
           <input
             type="text"
@@ -91,7 +91,7 @@ function SearchFilter({
                 position: 'absolute',
                 right: '10px',
                 background: 'transparent',
-                color: '#94a3b8',
+                color: 'var(--text-subtle)',
                 padding: '6px',
               }}
               title="Clear search"
@@ -105,7 +105,7 @@ function SearchFilter({
           <div
             style={{
               display: 'flex',
-              background: 'var(--bg-page)',
+              background: 'var(--bg-subtle)',
               padding: '3px',
               borderRadius: '10px',
               border: '1px solid var(--border-subtle)',

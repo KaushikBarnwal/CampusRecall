@@ -6,7 +6,7 @@ export default function ConfirmModal({ title, message, onConfirm, onCancel }) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backgroundColor: 'rgba(20, 18, 16, 0.72)',
         backdropFilter: 'blur(4px)',
         zIndex: 110,
         display: 'flex',
@@ -81,7 +81,7 @@ export default function ConfirmModal({ title, message, onConfirm, onCancel }) {
             onClick={onConfirm}
             style={{
               padding: '8px 16px',
-              background: '#ef4444',
+              background: 'var(--lost-color, #c2410c)',
               color: '#ffffff',
               borderRadius: '8px',
               fontSize: '13px',

@@ -26,7 +26,7 @@ export default function AuthModal({ currentUser, onSelectUser, onClose }) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backgroundColor: 'rgba(20, 18, 16, 0.72)',
         backdropFilter: 'blur(4px)',
         zIndex: 110,
         display: 'flex',
@@ -134,7 +134,7 @@ export default function AuthModal({ currentUser, onSelectUser, onClose }) {
                       padding: '12px 14px',
                       borderRadius: '10px',
                       border: `1.5px solid ${isCurrent ? 'var(--primary)' : 'var(--border-subtle)'}`,
-                      background: isCurrent ? 'rgba(37, 99, 235, 0.12)' : 'var(--bg-page)',
+                      background: isCurrent ? 'var(--primary-light)' : 'var(--bg-page)',
                       cursor: 'pointer',
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -145,7 +145,7 @@ export default function AuthModal({ currentUser, onSelectUser, onClose }) {
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         {u.role === 'admin' ? (
-                          <Shield size={14} color="#dc2626" />
+                          <Shield size={14} color="var(--lost-color, #c2410c)" />
                         ) : (
                           <User size={14} color="var(--primary)" />
                         )}

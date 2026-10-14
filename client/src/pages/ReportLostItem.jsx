@@ -208,7 +208,7 @@ export default function ReportLostItem({ onAddItem, onCancel, currentUser }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span
                 style={{
-                  background: isGeoTagged ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.12)',
+                  background: isGeoTagged ? 'var(--lost-bg)' : 'var(--primary-light)',
                   color: isGeoTagged ? 'var(--lost-color)' : 'var(--primary)',
                   padding: '6px',
                   borderRadius: '8px',
@@ -316,7 +316,7 @@ export default function ReportLostItem({ onAddItem, onCancel, currentUser }) {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#ef4444',
+                    color: 'var(--lost-color)',
                     fontSize: '12px',
                     cursor: 'pointer',
                     display: 'inline-flex',

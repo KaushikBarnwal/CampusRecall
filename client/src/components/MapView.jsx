@@ -83,9 +83,9 @@ export default function MapView({ items }) {
       bounds.extend(coords);
 
       // Pin Color: Red for lost, Green for found
-      const pinColor = isLost ? '#ef4444' : '#10b981';
+      const pinColor = isLost ? '#c2410c' : '#15803d';
       const shadowEffect = hasExactGps
-        ? '0 0 14px rgba(16, 185, 129, 0.85), 0 4px 10px rgba(0,0,0,0.35)'
+        ? '0 0 14px rgba(21, 128, 61, 0.8), 0 4px 10px rgba(0,0,0,0.35)'
         : '0 4px 10px rgba(0,0,0,0.35)';
 
       // Custom SVG Div Icon with Geo-Tag indication
@@ -134,8 +134,8 @@ export default function MapView({ items }) {
               font-weight: 800;
               padding: 2px 6px;
               border-radius: 4px;
-              background: ${isLost ? '#fef2f2' : '#ecfdf5'};
-              color: ${isLost ? '#ef4444' : '#10b981'};
+              background: ${isLost ? 'var(--lost-bg)' : 'var(--found-bg)'};
+              color: ${isLost ? 'var(--lost-color)' : 'var(--found-color)'}; border: 1px solid ${isLost ? 'var(--lost-border)' : 'var(--found-border)'};
             ">
               ${isLost ? 'LOST' : 'FOUND'}
             </span>
@@ -157,11 +157,11 @@ export default function MapView({ items }) {
               ? `<div style="
                   margin-bottom: 8px;
                   padding: 4px 8px;
-                  background: rgba(16, 185, 129, 0.12);
-                  border: 1px solid rgba(16, 185, 129, 0.3);
+                  background: var(--found-bg);
+                  border: 1px solid var(--found-border);
                   border-radius: 6px;
                   font-size: 11px;
-                  color: #10b981;
+                  color: var(--found-color);
                   font-weight: 700;
                   display: flex;
                   align-items: center;
@@ -212,7 +212,7 @@ export default function MapView({ items }) {
           position: 'absolute',
           bottom: '16px',
           left: '16px',
-          background: 'rgba(15, 23, 42, 0.88)',
+          background: 'rgba(28, 25, 23, 0.92)',
           backdropFilter: 'blur(6px)',
           color: '#fff',
           padding: '8px 14px',
@@ -227,11 +227,11 @@ export default function MapView({ items }) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444', display: 'inline-block' }} />
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#c2410c', display: 'inline-block' }} />
           <span>Lost</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#15803d', display: 'inline-block' }} />
           <span>Found</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>

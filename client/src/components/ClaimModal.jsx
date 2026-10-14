@@ -37,7 +37,7 @@ export default function ClaimModal({ item, currentUser, onSubmitClaim, onClose }
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backgroundColor: 'rgba(20, 18, 16, 0.72)',
         backdropFilter: 'blur(4px)',
         zIndex: 110,
         display: 'flex',

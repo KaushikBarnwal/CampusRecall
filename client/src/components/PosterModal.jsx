@@ -20,7 +20,7 @@ export default function PosterModal({ item, onClose }) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backgroundColor: 'rgba(20, 18, 16, 0.72)',
         backdropFilter: 'blur(4px)',
         zIndex: 100,
         display: 'flex',
@@ -109,7 +109,7 @@ export default function PosterModal({ item, onClose }) {
             display: 'flex',
             flexDirection: 'column',
             gap: '14px',
-            border: '2px solid #0f172a',
+            border: '2px solid #1c1917',
             margin: '16px',
             borderRadius: '12px',
           }}
@@ -117,7 +117,7 @@ export default function PosterModal({ item, onClose }) {
           {/* Poster Header Banner */}
           <div
             style={{
-              backgroundColor: isLost ? '#ef4444' : '#10b981',
+              backgroundColor: isLost ? '#c2410c' : '#15803d',
               color: '#ffffff',
               textAlign: 'center',
               padding: '12px',
@@ -141,8 +141,8 @@ export default function PosterModal({ item, onClose }) {
           </div>
 
           {/* Item Title & Category */}
-          <div style={{ textAlign: 'center', borderBottom: '2px dashed #cbd5e1', paddingBottom: '12px' }}>
-            <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>
+          <div style={{ textAlign: 'center', borderBottom: '2px dashed #d6d0c4', paddingBottom: '12px' }}>
+            <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#1c1917', margin: '0 0 6px' }}>
               {item.title}
             </h2>
             <span
@@ -152,8 +152,8 @@ export default function PosterModal({ item, onClose }) {
                 gap: '4px',
                 fontSize: '12px',
                 fontWeight: 700,
-                color: '#475569',
-                background: '#f1f5f9',
+                color: '#57534e',
+                background: '#f5f3ee',
                 padding: '3px 10px',
                 borderRadius: '6px',
               }}
@@ -170,10 +170,10 @@ export default function PosterModal({ item, onClose }) {
                 maxHeight: '180px',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                border: '1px solid #cbd5e1',
+                border: '1px solid #e5e0d5',
                 display: 'flex',
                 justifyContent: 'center',
-                backgroundColor: '#f8fafc',
+                backgroundColor: '#faf8f5',
               }}
             >
               <img
@@ -187,10 +187,10 @@ export default function PosterModal({ item, onClose }) {
           {/* Details Box */}
           <div
             style={{
-              background: '#f8fafc',
+              background: '#faf8f5',
               padding: '12px 14px',
               borderRadius: '8px',
-              border: '1px solid #e2e8f0',
+              border: '1px solid #e5e0d5',
               display: 'flex',
               flexDirection: 'column',
               gap: '6px',
@@ -202,7 +202,7 @@ export default function PosterModal({ item, onClose }) {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                <MapPin size={14} color="#ef4444" />
+                <MapPin size={14} color="#c2410c" />
                 <strong>Last Seen:</strong> {item.location}
               </span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
@@ -220,33 +220,33 @@ export default function PosterModal({ item, onClose }) {
               justifyContent: 'space-between',
               gap: '14px',
               padding: '12px 16px',
-              border: '2px solid #0f172a',
+              border: '2px solid #1c1917',
               borderRadius: '8px',
               background: '#ffffff',
             }}
           >
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                <Phone size={14} color="#2563eb" />
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>
+                <Phone size={14} color="#235d41" />
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#1c1917' }}>
                   PLEASE CONTACT:
                 </span>
               </div>
-              <div style={{ fontSize: '15px', fontWeight: 800, color: '#2563eb', wordBreak: 'break-all' }}>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: '#235d41', wordBreak: 'break-all' }}>
                 {item.contact}
               </div>
-              <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#64748b' }}>
+              <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#6b645c' }}>
                 Scan the QR code to open listing and view live details.
               </p>
             </div>
 
-            <div style={{ padding: '6px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '6px', flexShrink: 0 }}>
+            <div style={{ padding: '6px', background: '#fff', border: '1px solid #e5e0d5', borderRadius: '6px', flexShrink: 0 }}>
               <QRCodeSVG value={qrData} size={84} level="M" />
             </div>
           </div>
 
           {/* Tear-Off Contact Slips (Clean Perforated Campus Noticeboard Aesthetic) */}
-          <div style={{ borderTop: '2px dashed #94a3b8', paddingTop: '10px', marginTop: '4px' }}>
+          <div style={{ borderTop: '2px dashed #a8a29e', paddingTop: '10px', marginTop: '4px' }}>
             <div
               style={{
                 display: 'flex',
@@ -255,7 +255,7 @@ export default function PosterModal({ item, onClose }) {
                 gap: '6px',
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#64748b',
+                color: '#6b645c',
                 marginBottom: '8px',
                 letterSpacing: '0.5px',
               }}
@@ -275,11 +275,11 @@ export default function PosterModal({ item, onClose }) {
                 <div
                   key={i}
                   style={{
-                    border: '1px dashed #94a3b8',
+                    border: '1px dashed #a8a29e',
                     borderTop: 'none',
                     borderRadius: '0 0 6px 6px',
                     padding: '8px 4px',
-                    background: '#f8fafc',
+                    background: '#faf8f5',
                     textAlign: 'center',
                     display: 'flex',
                     flexDirection: 'column',
@@ -288,12 +288,12 @@ export default function PosterModal({ item, onClose }) {
                     gap: '4px',
                   }}
                 >
-                  <Phone size={11} color="#2563eb" />
+                  <Phone size={11} color="#235d41" />
                   <span
                     style={{
                       fontSize: '10px',
                       fontWeight: 700,
-                      color: '#0f172a',
+                      color: '#1c1917',
                       lineHeight: '1.2',
                       wordBreak: 'break-word',
                       maxWidth: '100%',
@@ -304,7 +304,7 @@ export default function PosterModal({ item, onClose }) {
                   <span
                     style={{
                       fontSize: '9px',
-                      color: '#64748b',
+                      color: '#78716c',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',

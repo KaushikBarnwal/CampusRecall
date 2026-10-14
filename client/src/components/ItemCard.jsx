@@ -43,19 +43,19 @@ function StatusDropdown({ currentStatus, isUpdating, onStatusChange }) {
       label: 'Mark Active',
       shortLabel: 'Active',
       icon: Sparkles,
-      color: '#10b981',
+      color: 'var(--found-color, #15803d)',
     },
     CLAIMED: {
       label: 'Mark Claimed',
       shortLabel: 'Claimed',
       icon: Clock,
-      color: '#f59e0b',
+      color: 'var(--claimed-color, #b45309)',
     },
     RESOLVED: {
       label: 'Mark Resolved',
       shortLabel: 'Resolved',
       icon: CheckCheck,
-      color: '#6366f1',
+      color: 'var(--resolved-color, #4338ca)',
     },
   };
 
@@ -162,7 +162,7 @@ function StatusDropdown({ currentStatus, isUpdating, onStatusChange }) {
                   padding: '7px 10px',
                   borderRadius: '6px',
                   border: 'none',
-                  background: isSelected ? 'rgba(37, 99, 235, 0.12)' : 'transparent',
+                  background: isSelected ? 'var(--primary-light)' : 'transparent',
                   color: isSelected ? 'var(--primary)' : 'var(--text-main)',
                   fontSize: '12px',
                   fontWeight: isSelected ? 700 : 500,
@@ -271,7 +271,7 @@ function ItemCard({
         display: 'flex',
         flexDirection: 'column',
         gap: '14px',
-        border: isOwner ? '1.5px solid rgba(59, 130, 246, 0.5)' : undefined,
+        border: isOwner ? '1.5px solid var(--primary)' : undefined,
       }}
     >
       {/* Header Row: Title + Badges + Ownership */}
@@ -306,9 +306,9 @@ function ItemCard({
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#10b981',
-                  background: 'rgba(16, 185, 129, 0.12)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  color: 'var(--found-color)',
+                  background: 'var(--found-bg)',
+                  border: '1px solid var(--found-border)',
                   padding: '2px 8px',
                   borderRadius: '12px',
                   display: 'inline-flex',
@@ -327,9 +327,9 @@ function ItemCard({
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#2563eb',
-                  background: 'rgba(37, 99, 235, 0.12)',
-                  border: '1px solid rgba(37, 99, 235, 0.25)',
+                  color: 'var(--primary)',
+                  background: 'var(--primary-light)',
+                  border: '1px solid var(--primary-light)',
                   padding: '2px 8px',
                   borderRadius: '12px',
                   display: 'inline-flex',
@@ -345,9 +345,9 @@ function ItemCard({
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#ef4444',
-                  background: 'rgba(239, 68, 68, 0.12)',
-                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  color: 'var(--lost-color)',
+                  background: 'var(--lost-bg)',
+                  border: '1px solid var(--lost-border)',
                   padding: '2px 8px',
                   borderRadius: '12px',
                   display: 'inline-flex',
@@ -365,9 +365,9 @@ function ItemCard({
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
-                  color: '#b45309',
-                  background: 'rgba(245, 158, 11, 0.15)',
-                  border: '1px solid rgba(245, 158, 11, 0.35)',
+                  color: 'var(--claimed-color)',
+                  background: 'var(--claimed-bg)',
+                  border: '1px solid var(--claimed-border)',
                   padding: '2px 8px',
                   borderRadius: '12px',
                   display: 'inline-flex',
@@ -402,11 +402,11 @@ function ItemCard({
                 type="button"
                 onClick={handleDelete}
                 style={{
-                  background: 'rgba(239, 68, 68, 0.12)',
-                  color: '#ef4444',
+                  background: 'var(--lost-bg)',
+                  color: 'var(--lost-color)',
                   padding: '7px',
                   borderRadius: '8px',
-                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  border: '1px solid var(--lost-border)',
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -414,8 +414,8 @@ function ItemCard({
                   transition: 'background 0.15s ease',
                 }}
                 title="Delete this listing"
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--lost-border)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--lost-bg)')}
               >
                 <Trash2 size={14} />
               </button>
@@ -592,9 +592,9 @@ function ItemCard({
               style={{
                 fontSize: '12px',
                 padding: '6px 12px',
-                background: 'rgba(37, 99, 235, 0.12)',
+                background: 'var(--primary-light)',
                 color: 'var(--primary)',
-                border: '1px solid rgba(37, 99, 235, 0.3)',
+                border: '1px solid var(--primary-light)',
                 borderRadius: '8px',
               }}
               title="Search for matching items"
@@ -612,9 +612,9 @@ function ItemCard({
               style={{
                 fontSize: '12px',
                 padding: '6px 12px',
-                background: 'rgba(245, 158, 11, 0.12)',
-                color: '#b45309',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
+                background: 'var(--claimed-bg)',
+                color: 'var(--claimed-color)',
+                border: '1px solid var(--claimed-border)',
                 borderRadius: '8px',
                 fontWeight: 700,
                 display: 'inline-flex',
@@ -638,9 +638,9 @@ function ItemCard({
               style={{
                 fontSize: '12px',
                 padding: '6px 12px',
-                background: 'rgba(16, 185, 129, 0.12)',
+                background: 'var(--found-bg)',
                 color: 'var(--found-color)',
-                border: '1px solid rgba(16, 185, 129, 0.3)',
+                border: '1px solid var(--found-border)',
                 borderRadius: '8px',
                 textDecoration: 'none',
                 display: 'inline-flex',
@@ -682,7 +682,7 @@ function ItemCard({
             style={{
               fontSize: '12px',
               padding: '6px 12px',
-              background: copied ? '#10b981' : 'var(--bg-page)',
+              background: copied ? 'var(--found-color)' : 'var(--bg-page)',
               color: copied ? '#ffffff' : 'var(--text-main)',
               borderRadius: '8px',
               border: '1px solid var(--border-subtle)',

@@ -56,15 +56,18 @@ export default function Navbar({
       .toUpperCase() || 'U';
   };
 
+  const isBrowseActive = location.pathname === '/' || location.pathname === '/map';
+  const isMyReportsActive = location.pathname === '/my-reports';
+
   return (
     <header
       style={{
-        background: '#0f172a',
-        borderBottom: '1px solid #1e293b',
+        background: 'var(--nav-bg)',
+        borderBottom: '1px solid var(--nav-border)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        boxShadow: '0 4px 16px rgba(20, 18, 16, 0.18)',
       }}
     >
       <div
@@ -94,19 +97,19 @@ export default function Navbar({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: '#1e293b',
+                background: 'var(--nav-surface)',
                 padding: '7px',
                 borderRadius: '10px',
-                border: '1px solid #334155',
+                border: '1px solid var(--nav-surface-border)',
               }}
             >
-              <Compass size={20} color="#38bdf8" />
+              <Compass size={20} color="var(--nav-accent)" />
             </span>
             <span
               style={{
                 fontSize: '17px',
                 fontWeight: 800,
-                color: '#ffffff',
+                color: 'var(--nav-text)',
                 letterSpacing: '-0.3px',
               }}
             >
@@ -121,10 +124,11 @@ export default function Navbar({
               style={{
                 padding: '6px 12px',
                 fontSize: '13px',
-                fontWeight: location.pathname === '/' || location.pathname === '/map' ? 700 : 500,
-                background: location.pathname === '/' || location.pathname === '/map' ? '#1e293b' : 'transparent',
-                color: location.pathname === '/' || location.pathname === '/map' ? '#38bdf8' : '#94a3b8',
+                fontWeight: isBrowseActive ? 700 : 500,
+                background: isBrowseActive ? 'var(--nav-surface)' : 'transparent',
+                color: isBrowseActive ? 'var(--nav-accent)' : 'var(--nav-muted)',
                 borderRadius: '8px',
+                border: isBrowseActive ? '1px solid var(--nav-surface-border)' : '1px solid transparent',
               }}
             >
               Browse
@@ -136,10 +140,11 @@ export default function Navbar({
               style={{
                 padding: '6px 12px',
                 fontSize: '13px',
-                fontWeight: location.pathname === '/my-reports' ? 700 : 500,
-                background: location.pathname === '/my-reports' ? '#1e293b' : 'transparent',
-                color: location.pathname === '/my-reports' ? '#38bdf8' : '#94a3b8',
+                fontWeight: isMyReportsActive ? 700 : 500,
+                background: isMyReportsActive ? 'var(--nav-surface)' : 'transparent',
+                color: isMyReportsActive ? 'var(--nav-accent)' : 'var(--nav-muted)',
                 borderRadius: '8px',
+                border: isMyReportsActive ? '1px solid var(--nav-surface-border)' : '1px solid transparent',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
@@ -150,7 +155,7 @@ export default function Navbar({
               {myReportsCount > 0 && (
                 <span
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--primary)',
                     color: '#fff',
                     fontSize: '10px',
                     fontWeight: 800,
@@ -174,16 +179,16 @@ export default function Navbar({
               onClick={onToggleTheme}
               style={{
                 padding: '8px',
-                background: '#1e293b',
-                color: theme === 'dark' ? '#f59e0b' : '#94a3b8',
-                border: '1px solid #334155',
+                background: 'var(--nav-surface)',
+                color: theme === 'dark' ? '#fbbf24' : 'var(--nav-muted)',
+                border: '1px solid var(--nav-surface-border)',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              title={theme === 'dark' ? 'Switch to Warm Stone (Light Mode)' : 'Switch to Warm Obsidian (Dark Mode)'}
             >
               {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
             </button>
@@ -198,10 +203,10 @@ export default function Navbar({
                 padding: '7px 14px',
                 fontSize: '13px',
                 fontWeight: 700,
-                backgroundColor: '#2563eb',
+                backgroundColor: 'var(--primary)',
                 color: '#ffffff',
                 borderRadius: '8px',
-                boxShadow: '0 2px 4px rgba(37,99,235,0.2)',
+                boxShadow: '0 2px 8px rgba(35, 93, 65, 0.35)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
@@ -218,10 +223,10 @@ export default function Navbar({
                   position: 'absolute',
                   right: 0,
                   top: '115%',
-                  background: 'var(--bg-card, #ffffff)',
+                  background: 'var(--bg-card)',
                   borderRadius: '12px',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.25)',
-                  border: '1px solid var(--border-subtle, #e2e8f0)',
+                  boxShadow: 'var(--shadow-lg)',
+                  border: '1px solid var(--border-subtle)',
                   padding: '6px',
                   minWidth: '200px',
                   zIndex: 60,
@@ -243,17 +248,17 @@ export default function Navbar({
                     width: '100%',
                     padding: '8px 12px',
                     borderRadius: '8px',
-                    background: location.pathname === '/report-lost' ? 'var(--lost-bg, #fef2f2)' : 'transparent',
-                    color: '#ef4444',
+                    background: location.pathname === '/report-lost' ? 'var(--lost-bg)' : 'transparent',
+                    color: 'var(--lost-color)',
                     textAlign: 'left',
                     fontSize: '13px',
                     justifyContent: 'flex-start',
                   }}
                 >
-                  <AlertCircle size={16} color="#ef4444" />
+                  <AlertCircle size={16} color="var(--lost-color)" />
                   <div>
-                    <strong style={{ display: 'block', color: 'var(--text-main, #0f172a)' }}>Report Lost Item</strong>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted, #64748b)' }}>I lost something</span>
+                    <strong style={{ display: 'block', color: 'var(--text-main)' }}>Report Lost Item</strong>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>I lost something</span>
                   </div>
                 </button>
 
@@ -270,17 +275,17 @@ export default function Navbar({
                     width: '100%',
                     padding: '8px 12px',
                     borderRadius: '8px',
-                    background: location.pathname === '/report-found' ? 'var(--found-bg, #ecfdf5)' : 'transparent',
-                    color: '#10b981',
+                    background: location.pathname === '/report-found' ? 'var(--found-bg)' : 'transparent',
+                    color: 'var(--found-color)',
                     textAlign: 'left',
                     fontSize: '13px',
                     justifyContent: 'flex-start',
                   }}
                 >
-                  <CheckCircle2 size={16} color="#10b981" />
+                  <CheckCircle2 size={16} color="var(--found-color)" />
                   <div>
-                    <strong style={{ display: 'block', color: 'var(--text-main, #0f172a)' }}>Report Found Item</strong>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted, #64748b)' }}>I found an item</span>
+                    <strong style={{ display: 'block', color: 'var(--text-main)' }}>Report Found Item</strong>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>I found an item</span>
                   </div>
                 </button>
               </div>
@@ -295,9 +300,9 @@ export default function Navbar({
               style={{
                 padding: '4px 8px 4px 4px',
                 fontSize: '12px',
-                background: '#1e293b',
-                color: '#e2e8f0',
-                border: '1px solid #334155',
+                background: 'var(--nav-surface)',
+                color: 'var(--nav-text)',
+                border: '1px solid var(--nav-surface-border)',
                 borderRadius: '24px',
                 display: 'flex',
                 alignItems: 'center',
@@ -310,7 +315,7 @@ export default function Navbar({
                   width: '26px',
                   height: '26px',
                   borderRadius: '50%',
-                  background: isAdmin ? '#ef4444' : '#2563eb',
+                  background: isAdmin ? 'var(--lost-color)' : 'var(--primary)',
                   color: '#ffffff',
                   fontSize: '11px',
                   fontWeight: 800,
@@ -322,14 +327,14 @@ export default function Navbar({
                 {getInitials(currentUser?.name)}
               </span>
 
-              <span style={{ fontWeight: 600, color: '#f8fafc' }}>
+              <span style={{ fontWeight: 600, color: 'var(--nav-text)' }}>
                 {currentUser?.name ? currentUser.name.split(' ')[0] : 'Account'}
               </span>
 
               {isAdmin && (
                 <span
                   style={{
-                    background: '#ef4444',
+                    background: 'var(--lost-color)',
                     color: '#fff',
                     fontSize: '9px',
                     padding: '1px 5px',
@@ -350,10 +355,10 @@ export default function Navbar({
                   position: 'absolute',
                   right: 0,
                   top: '115%',
-                  background: 'var(--bg-card, #ffffff)',
+                  background: 'var(--bg-card)',
                   borderRadius: '12px',
-                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.25)',
-                  border: '1px solid var(--border-subtle, #e2e8f0)',
+                  boxShadow: 'var(--shadow-lg)',
+                  border: '1px solid var(--border-subtle)',
                   padding: '12px',
                   minWidth: '240px',
                   zIndex: 60,
@@ -362,12 +367,12 @@ export default function Navbar({
                   gap: '10px',
                 }}
               >
-                <div style={{ borderBottom: '1px solid var(--border-subtle, #f1f5f9)', paddingBottom: '10px' }}>
+                <div style={{ borderBottom: '1px solid var(--border-subtle)', paddingBottom: '10px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {isAdmin ? <Shield size={16} color="#ef4444" /> : <User size={16} color="#2563eb" />}
-                    <strong style={{ fontSize: '14px', color: 'var(--text-main, #0f172a)' }}>{currentUser?.name}</strong>
+                    {isAdmin ? <Shield size={16} color="var(--lost-color)" /> : <User size={16} color="var(--primary)" />}
+                    <strong style={{ fontSize: '14px', color: 'var(--text-main)' }}>{currentUser?.name}</strong>
                   </div>
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted, #64748b)', display: 'block', marginTop: '2px' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginTop: '2px' }}>
                     {currentUser?.email}
                   </span>
                   <div style={{ marginTop: '6px' }}>
@@ -377,8 +382,8 @@ export default function Navbar({
                         fontWeight: 700,
                         padding: '2px 8px',
                         borderRadius: '10px',
-                        background: isAdmin ? 'rgba(239, 68, 68, 0.15)' : 'rgba(37, 99, 235, 0.15)',
-                        color: isAdmin ? '#ef4444' : '#3b82f6',
+                        background: isAdmin ? 'rgba(194, 65, 12, 0.15)' : 'rgba(35, 93, 65, 0.15)',
+                        color: isAdmin ? 'var(--lost-color)' : 'var(--primary)',
                       }}
                     >
                       {isAdmin ? '🛡️ Central Security Admin' : '👤 Student / User'}
@@ -392,10 +397,11 @@ export default function Navbar({
                     alignItems: 'center',
                     gap: '6px',
                     fontSize: '11px',
-                    color: dataSource === 'backend' ? '#10b981' : '#f59e0b',
-                    background: dataSource === 'backend' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                    color: dataSource === 'backend' ? 'var(--found-color)' : 'var(--claimed-color)',
+                    background: dataSource === 'backend' ? 'var(--found-bg)' : 'var(--claimed-bg)',
                     padding: '6px 8px',
                     borderRadius: '6px',
+                    border: `1px solid ${dataSource === 'backend' ? 'var(--found-border)' : 'var(--claimed-border)'}`,
                   }}
                 >
                   {dataSource === 'backend' ? <Database size={13} /> : <HardDrive size={13} />}
@@ -412,10 +418,11 @@ export default function Navbar({
                     width: '100%',
                     padding: '8px',
                     fontSize: '12px',
-                    background: 'var(--bg-page, #f1f5f9)',
-                    color: 'var(--text-main, #0f172a)',
-                    borderRadius: '6px',
+                    background: 'var(--bg-subtle)',
+                    color: 'var(--text-main)',
+                    borderRadius: '8px',
                     fontWeight: 600,
+                    border: '1px solid var(--border-subtle)',
                   }}
                 >
                   Switch User / Role

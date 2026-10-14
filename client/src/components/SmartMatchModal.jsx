@@ -36,7 +36,7 @@ export default function SmartMatchModal({ item, allItems, onClose }) {
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backgroundColor: 'rgba(20, 18, 16, 0.72)',
         backdropFilter: 'blur(4px)',
         zIndex: 100,
         display: 'flex',
@@ -77,7 +77,7 @@ export default function SmartMatchModal({ item, allItems, onClose }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span
               style={{
-                background: 'rgba(37, 99, 235, 0.12)',
+                background: 'var(--primary-light)',
                 color: 'var(--primary)',
                 padding: '8px',
                 borderRadius: '10px',
@@ -159,7 +159,7 @@ export default function SmartMatchModal({ item, allItems, onClose }) {
           {/* Results list */}
           {loading ? (
             <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b' }}>
-              <Sparkles size={28} color="#2563eb" className="spin-icon" style={{ margin: '0 auto 8px' }} />
+              <Sparkles size={28} color="var(--primary)" className="spin-icon" style={{ margin: '0 auto 8px' }} />
               <p style={{ fontSize: '14px' }}>Scanning directory for matching reports...</p>
             </div>
           ) : matches.length === 0 ? (
@@ -227,7 +227,7 @@ export default function SmartMatchModal({ item, allItems, onClose }) {
                             {match.type === 'LOST' ? <AlertCircle size={11} /> : <CheckCircle2 size={11} />}
                             {match.type}
                           </span>
-                          <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'rgba(37, 99, 235, 0.12)', padding: '2px 8px', borderRadius: '12px', fontWeight: 700 }}>
+                          <span style={{ fontSize: '11px', color: 'var(--primary)', background: 'var(--primary-light)', padding: '2px 8px', borderRadius: '12px', fontWeight: 700 }}>
                             Category Match
                           </span>
                         </div>
@@ -282,7 +282,7 @@ export default function SmartMatchModal({ item, allItems, onClose }) {
                       style={{
                         padding: '4px 10px',
                         fontSize: '12px',
-                        background: copiedId === (match._id || match.id) ? '#10b981' : 'var(--bg-card)',
+                        background: copiedId === (match._id || match.id) ? 'var(--found-color)' : 'var(--bg-card)',
                         color: copiedId === (match._id || match.id) ? '#fff' : 'var(--text-main)',
                         border: '1px solid var(--border-subtle)',
                         borderRadius: '6px',
