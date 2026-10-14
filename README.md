@@ -36,7 +36,7 @@ Currently, recovery relies on fragmented channels:
 This project demonstrates the complete requirements of **CampusRecall**: 
 
 | Requirement | Project Implementation & Proof in Codebase |
-|:---|:---|:---|
+|:---|:---|
 | **🎣 React Hooks** | Comprehensive use of `useState` (inputs, modal toggles, filter states), `useEffect` (API hydration, theme sync, outside-click detection), `useMemo` (memoized filtering & count calculations), and `useCallback` (event handler reference stability). |
 | **🚦 Client-Side Routing** | Full client routing powered by `react-router-dom` (`<BrowserRouter>`, `<Routes>`, `<Route>`, `useNavigate`, `useLocation`) with distinct URLs for `/`, `/map`, `/my-reports`, `/report-lost`, and `/report-found`. |
 | **📝 Forms & Validation** | Controlled input forms with required field verification, email/contact checks, coordinate boundaries, category validation, and EXIF image metadata extraction. |
@@ -46,7 +46,7 @@ This project demonstrates the complete requirements of **CampusRecall**:
 | **🛡️ Error Handling & Feedback** | Animated floating toast alerts (`ToastContainer.jsx`), network failure fallbacks with `localStorage`, custom confirmation dialogs (`ConfirmModal.jsx`), and friendly empty states. |
 | **📱 Responsive Design** | Fluid layouts optimized for mobile, tablet, and desktop viewports using CSS design tokens, flexible grids, and accessible touch targets. |
 | **⚡ Performance Optimization** | `useMemo` for heavy search/filter computations, `useCallback` for stable function references, `React.memo` on `ItemCard` and `SearchFilter` to eliminate wasted re-renders, and fast Vite compilation (<500ms). |
-| **🧪 Project Testing** | Validated via documented manual test-case suite, strict ESLint static analysis (0 errors, 0 warnings), and production build validation. | Section [Project Testing & Verification](#-project-testing--verification) below |
+| **🧪 Project Testing** | Validated via documented manual test-case suite, strict ESLint static analysis (0 errors, 0 warnings), and production build validation (see [Project Testing & Verification](#-project-testing--verification) below). |
 
 ### 📋 Technical Scope & Engineering Highlights
 - **Full-Stack Architecture**: Architected and developed a full-stack MERN application to digitize lost-and-found operations across campus, serving students and security desks across 9 item categories.
