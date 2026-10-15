@@ -106,6 +106,7 @@ export default function PosterModal({ item, onClose }) {
             padding: '24px',
             overflowY: 'auto',
             background: '#ffffff',
+            color: '#1c1917',
             display: 'flex',
             flexDirection: 'column',
             gap: '14px',
@@ -188,6 +189,7 @@ export default function PosterModal({ item, onClose }) {
           <div
             style={{
               background: '#faf8f5',
+              color: '#292524',
               padding: '12px 14px',
               borderRadius: '8px',
               border: '1px solid #e5e0d5',
@@ -195,19 +197,20 @@ export default function PosterModal({ item, onClose }) {
               flexDirection: 'column',
               gap: '6px',
               fontSize: '13px',
+              lineHeight: '1.45',
             }}
           >
-            <div>
-              <strong>Description:</strong> {item.description}
+            <div style={{ color: '#292524' }}>
+              <strong style={{ color: '#1c1917' }}>Description:</strong> {item.description}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', color: '#44403c' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#44403c' }}>
                 <MapPin size={14} color="#c2410c" />
-                <strong>Last Seen:</strong> {item.location}
+                <strong style={{ color: '#1c1917' }}>Last Seen:</strong> {item.location}
               </span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                <Calendar size={14} />
-                <strong>Date:</strong> {item.date}
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#44403c' }}>
+                <Calendar size={14} color="#57534e" />
+                <strong style={{ color: '#1c1917' }}>Date:</strong> {item.date}
               </span>
             </div>
           </div>
