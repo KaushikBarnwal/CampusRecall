@@ -260,7 +260,7 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
       />
 
-      <main style={{ maxWidth: '960px', margin: '20px auto', padding: '0 20px', width: '100%', flex: 1 }}>
+      <main style={{ maxWidth: '960px', margin: '20px auto', padding: '0 20px', width: '100%', flex: 1, boxSizing: 'border-box' }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-muted)' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>

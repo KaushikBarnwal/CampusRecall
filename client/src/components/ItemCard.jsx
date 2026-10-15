@@ -275,7 +275,7 @@ function ItemCard({
       }}
     >
       {/* Header Row: Title + Badges + Ownership */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+      <div className="item-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' }}>
             <span className={`badge ${isLost ? 'badge-lost' : 'badge-found'}`}>
@@ -390,7 +390,7 @@ function ItemCard({
 
         {/* Status Switcher & Delete Controls (Only for Creator or Admin!) */}
         {canManage && (
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div className="item-card-manage-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <StatusDropdown
               currentStatus={status}
               isUpdating={isUpdating}
@@ -425,9 +425,10 @@ function ItemCard({
       </div>
 
       {/* Content Body: Image (if uploaded) + Description */}
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+      <div className="item-card-body" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
         {item.imageUrl && (
           <div
+            className="item-card-image"
             style={{
               width: '120px',
               height: '100px',
@@ -535,6 +536,7 @@ function ItemCard({
 
       {/* Footer Row: Contact Info & Action Triggers */}
       <div
+        className="item-card-footer"
         style={{
           borderTop: '1px solid var(--border-subtle)',
           paddingTop: '12px',
@@ -562,7 +564,7 @@ function ItemCard({
           </code>
         </span>
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div className="item-card-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           {/* Claim Button: Available when user is NOT the owner and item is not resolved */}
           {!canManage && status !== 'RESOLVED' && onOpenClaim && (
             <button

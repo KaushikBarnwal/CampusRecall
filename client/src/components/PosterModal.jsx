@@ -32,6 +32,7 @@ export default function PosterModal({ item, onClose }) {
       onClick={onClose}
     >
       <div
+        className="poster-modal-container"
         style={{
           backgroundColor: 'var(--bg-card)',
           borderRadius: '16px',
@@ -102,6 +103,7 @@ export default function PosterModal({ item, onClose }) {
         {/* Printable Poster Area */}
         <div
           id="printable-poster"
+          className="printable-poster-area"
           style={{
             padding: '24px',
             overflowY: 'auto',
@@ -217,6 +219,7 @@ export default function PosterModal({ item, onClose }) {
 
           {/* QR Code + Contact Row */}
           <div
+            className="poster-qr-contact-row"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -268,6 +271,7 @@ export default function PosterModal({ item, onClose }) {
             </div>
 
             <div
+              className="poster-tear-slips"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',

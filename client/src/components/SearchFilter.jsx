@@ -44,6 +44,7 @@ function SearchFilter({
 
   return (
     <div
+      className="search-filter-card"
       style={{
         backgroundColor: 'var(--bg-card)',
         padding: '20px',
@@ -57,8 +58,8 @@ function SearchFilter({
       }}
     >
       {/* Search Input Bar + View Switcher */}
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '240px', display: 'flex', alignItems: 'center' }}>
+      <div className="search-top-row" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div className="search-input-wrapper" style={{ position: 'relative', flex: 1, minWidth: '240px', display: 'flex', alignItems: 'center' }}>
           <span
             style={{
               position: 'absolute',
@@ -103,6 +104,7 @@ function SearchFilter({
         {/* View Mode Toggle (List vs Map) */}
         {setViewMode && (
           <div
+            className="view-mode-toggle"
             style={{
               display: 'flex',
               background: 'var(--bg-subtle)',
@@ -253,6 +255,7 @@ function SearchFilter({
       </div>
       {/* Filter Row 3: Sort Options & Date Range Filter (Option 4) */}
       <div
+        className="filter-options-bottom"
         style={{
           borderTop: '1px solid var(--border-subtle)',
           paddingTop: '12px',

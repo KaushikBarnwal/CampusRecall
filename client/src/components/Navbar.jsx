@@ -13,6 +13,8 @@ import {
   ChevronDown,
   Sun,
   Moon,
+  Menu,
+  X,
 } from 'lucide-react';
 
 export default function Navbar({
@@ -27,11 +29,15 @@ export default function Navbar({
   const location = useLocation();
   const [reportDropdownOpen, setReportDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const reportMenuRef = useRef(null);
   const profileMenuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   const isAdmin = currentUser?.role === 'admin';
+
+
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -42,18 +48,23 @@ export default function Navbar({
       if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
         setProfileDropdownOpen(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        // Only close if clicking outside the entire header
+      }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const getInitials = (name = '') => {
-    return name
-      .split(' ')
-      .map((part) => part[0])
-      .join('')
-      .substring(0, 2)
-      .toUpperCase() || 'U';
+    return (
+      name
+        .split(' ')
+        .map((part) => part[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase() || 'U'
+    );
   };
 
   const isBrowseActive = location.pathname === '/' || location.pathname === '/map';
@@ -61,6 +72,7 @@ export default function Navbar({
 
   return (
     <header
+      ref={mobileMenuRef}
       style={{
         background: 'var(--nav-bg)',
         borderBottom: '1px solid var(--nav-border)',
@@ -74,17 +86,20 @@ export default function Navbar({
         style={{
           maxWidth: '960px',
           margin: '0 auto',
-          padding: '10px 20px',
+          padding: '10px 16px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '16px',
+          gap: '12px',
         }}
       >
         {/* Left Side: Brand Logo & Navigation */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div
-            onClick={() => navigate('/')}
+            onClick={() => {
+              navigate('/');
+              setMobileMenuOpen(false);
+            }}
             style={{
               cursor: 'pointer',
               display: 'flex',
@@ -111,13 +126,15 @@ export default function Navbar({
                 fontWeight: 800,
                 color: 'var(--nav-text)',
                 letterSpacing: '-0.3px',
+                whiteSpace: 'nowrap',
               }}
             >
               CampusRecall
             </span>
           </div>
 
-          <nav style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+          {/* Desktop Navigation Links */}
+          <nav className="desktop-only" style={{ gap: '6px', alignItems: 'center' }}>
             <button
               type="button"
               onClick={() => navigate('/')}
@@ -170,8 +187,8 @@ export default function Navbar({
           </nav>
         </div>
 
-        {/* Right Side: Theme Toggle + "+ Report" + Profile */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Right Side: Desktop Controls */}
+        <div className="desktop-only" style={{ alignItems: 'center', gap: '8px' }}>
           {/* Dark Mode / Light Mode Toggle */}
           {onToggleTheme && (
             <button
@@ -401,7 +418,7 @@ export default function Navbar({
                     background: dataSource === 'backend' ? 'var(--found-bg)' : 'var(--claimed-bg)',
                     padding: '6px 8px',
                     borderRadius: '6px',
-                    border: `1px solid ${dataSource === 'backend' ? 'var(--found-border)' : 'var(--claimed-border)'}`,
+                    border: '1px solid ' + (dataSource === 'backend' ? 'var(--found-border)' : 'var(--claimed-border)'),
                   }}
                 >
                   {dataSource === 'backend' ? <Database size={13} /> : <HardDrive size={13} />}
@@ -431,7 +448,261 @@ export default function Navbar({
             )}
           </div>
         </div>
+
+        {/* Right Side: Mobile Controls */}
+        <div className="mobile-only" style={{ alignItems: 'center', gap: '8px' }}>
+          {/* Quick Theme Toggle */}
+          {onToggleTheme && (
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              style={{
+                padding: '7px',
+                background: 'var(--nav-surface)',
+                color: theme === 'dark' ? '#fbbf24' : 'var(--nav-muted)',
+                border: '1px solid var(--nav-surface-border)',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          )}
+
+          {/* Hamburger Menu Toggle */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            style={{
+              padding: '7px 9px',
+              background: mobileMenuOpen ? 'var(--primary)' : 'var(--nav-surface)',
+              color: mobileMenuOpen ? '#ffffff' : 'var(--nav-text)',
+              border: '1px solid var(--nav-surface-border)',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Drawer Dropdown */}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-menu-drawer"
+          style={{
+            background: 'var(--nav-bg)',
+            borderTop: '1px solid var(--nav-surface-border)',
+            padding: '14px 16px 18px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            boxShadow: '0 12px 24px rgba(0, 0, 0, 0.4)',
+          }}
+        >
+          {/* User Status Card */}
+          <div
+            style={{
+              background: 'var(--nav-surface)',
+              border: '1px solid var(--nav-surface-border)',
+              borderRadius: '10px',
+              padding: '10px 12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: isAdmin ? 'var(--lost-color)' : 'var(--primary)',
+                  color: '#ffffff',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {getInitials(currentUser?.name)}
+              </span>
+              <div>
+                <strong style={{ fontSize: '13px', color: 'var(--nav-text)', display: 'block' }}>
+                  {currentUser?.name || 'Guest User'}
+                </strong>
+                <span style={{ fontSize: '11px', color: 'var(--nav-muted)' }}>
+                  {isAdmin ? '🛡️ Admin' : '👤 Campus Member'}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAuth();
+              }}
+              style={{
+                fontSize: '11px',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                background: 'var(--nav-bg)',
+                color: 'var(--nav-accent)',
+                border: '1px solid var(--nav-surface-border)',
+                fontWeight: 600,
+              }}
+            >
+              Switch User
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/');
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                padding: '10px 12px',
+                fontSize: '13px',
+                fontWeight: isBrowseActive ? 700 : 500,
+                background: isBrowseActive ? 'var(--nav-surface)' : 'var(--nav-bg)',
+                color: isBrowseActive ? 'var(--nav-accent)' : 'var(--nav-muted)',
+                borderRadius: '8px',
+                border: '1px solid ' + (dataSource === 'backend' ? 'var(--found-border)' : 'var(--claimed-border)'),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <Compass size={15} />
+              <span>Browse</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/my-reports');
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                padding: '10px 12px',
+                fontSize: '13px',
+                fontWeight: isMyReportsActive ? 700 : 500,
+                background: isMyReportsActive ? 'var(--nav-surface)' : 'var(--nav-bg)',
+                color: isMyReportsActive ? 'var(--nav-accent)' : 'var(--nav-muted)',
+                borderRadius: '8px',
+                border: '1px solid ' + (dataSource === 'backend' ? 'var(--found-border)' : 'var(--claimed-border)'),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <FolderHeart size={15} />
+              <span>My Reports</span>
+              {myReportsCount > 0 && (
+                <span
+                  style={{
+                    background: 'var(--primary)',
+                    color: '#fff',
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    padding: '1px 5px',
+                    borderRadius: '8px',
+                  }}
+                >
+                  {myReportsCount}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Action Buttons: Report Lost & Report Found */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/report-lost');
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                padding: '10px 14px',
+                fontSize: '13px',
+                fontWeight: 700,
+                background: 'var(--lost-bg)',
+                color: 'var(--lost-color)',
+                border: '1px solid var(--lost-border)',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                width: '100%',
+              }}
+            >
+              <AlertCircle size={15} />
+              <span>Report Lost Item</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                navigate('/report-found');
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                padding: '10px 14px',
+                fontSize: '13px',
+                fontWeight: 700,
+                background: 'var(--found-bg)',
+                color: 'var(--found-color)',
+                border: '1px solid var(--found-border)',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                width: '100%',
+              }}
+            >
+              <CheckCircle2 size={15} />
+              <span>Report Found Item</span>
+            </button>
+          </div>
+
+          {/* Database indicator */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              fontSize: '11px',
+              color: dataSource === 'backend' ? 'var(--found-color)' : 'var(--claimed-color)',
+              paddingTop: '6px',
+            }}
+          >
+            {dataSource === 'backend' ? <Database size={12} /> : <HardDrive size={12} />}
+            <span>{dataSource === 'backend' ? 'MongoDB Connected' : 'Local Storage Mode'}</span>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

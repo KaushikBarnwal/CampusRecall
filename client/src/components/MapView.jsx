@@ -208,6 +208,7 @@ export default function MapView({ items }) {
 
       {/* Map Legend Overlay */}
       <div
+        className="map-legend-overlay"
         style={{
           position: 'absolute',
           bottom: '16px',

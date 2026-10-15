@@ -99,6 +99,7 @@ export default function ReportFoundItem({ onAddItem, onCancel, currentUser }) {
 
   return (
     <div
+      className="report-form-card"
       style={{
         backgroundColor: 'var(--bg-card)',
         color: 'var(--text-main)',
@@ -114,7 +115,7 @@ export default function ReportFoundItem({ onAddItem, onCancel, currentUser }) {
             <CheckCircle2 size={13} />
             Found Item Report
           </span>
-          <h2 style={{ color: 'var(--found-color)', margin: 0, fontSize: '24px', fontWeight: 800 }}>
+          <h2 className="report-form-title" style={{ color: 'var(--found-color)', margin: 0, fontSize: '24px', fontWeight: 800 }}>
             Report a Found Item
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginTop: '4px' }}>
@@ -344,7 +345,7 @@ export default function ReportFoundItem({ onAddItem, onCancel, currentUser }) {
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+        <div className="form-actions-row" style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
           <button
             type="submit"
             disabled={submitting}

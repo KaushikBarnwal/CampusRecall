@@ -4,6 +4,7 @@ export default function ToastContainer({ toasts, onDismiss }) {
   if (!toasts || toasts.length === 0) return null;
   return (
     <div
+      className="toast-container"
       style={{
         position: 'fixed',
         bottom: '24px',

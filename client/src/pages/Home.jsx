@@ -30,7 +30,7 @@ export default function Home({
   return (
     <div>
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-main)', marginBottom: '6px' }}>
+        <h2 className="page-header-title" style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-main)', marginBottom: '6px' }}>
           {isMyReportsView ? '📋 My Reported Belongings' : 'CampusRecall • Lost & Found Portal'}
         </h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
